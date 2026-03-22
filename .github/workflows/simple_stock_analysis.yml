@@ -1,0 +1,12 @@
+env:
+    GEMINI_API_KEY: ${{ secrets.gemini_api_key }}
+    STOCK_LIST: ${{ secrets.stock_list }}
+    WECHAT_WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
+    STOCK_DATA_API_KEY: ${{ secrets.STOCK_DATA_API_KEY }}
+  run: |
+    # 新增：验证密钥是否读取成功（仅显示前10位，避免泄露）
+    echo "STOCK_DATA_API_KEY: ${STOCK_DATA_API_KEY:0:10}..."
+    echo "GEMINI_API_KEY: ${GEMINI_API_KEY:0:10}..."
+    echo "股票列表: ${STOCK_LIST}"
+    # 运行主脚本
+    python main.py
