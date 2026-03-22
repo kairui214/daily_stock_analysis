@@ -1,49 +1,44 @@
-# 工作流名称（显示在Actions页面）
+# 工作流名称
 name: Simple Daily Stock Analysis
 
-# 触发方式：仅手动触发
+# 触发方式：仅手动触发（第5行，语法严格正确）
 on:
   workflow_dispatch:
 
-# 运行作业（核心逻辑）
+# 运行作业
 jobs:
   run_stock_analysis:
     runs-on: ubuntu-latest
     steps:
-      # 步骤1：拉取仓库代码
+      # 步骤1：拉取代码
       - name: Checkout repository code
         uses: actions/checkout@v4
 
-      # 步骤2：配置Python环境
+      # 步骤2：配置Python
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
 
-      # 步骤3：安装核心依赖（如需tavily库，补充进去）
+      # 步骤3：安装依赖（含tavily）
       - name: Install required dependencies
         run: |
           python -m pip install --upgrade pip
-          # 新增 tavily-python 库（如果代码中用到Tavily API）
           pip install requests google-generativeai tushare pandas numpy tavily-python
 
-      # 步骤4：运行主脚本（补充 TAVILY_API_KEYS 环境变量）
+      # 步骤4：运行脚本（传递所有密钥）
       - name: Run stock analysis script
         env:
-          # 原有4个核心参数
           GEMINI_API_KEY: ${{ secrets.gemini_api_key }}
           STOCK_LIST: ${{ secrets.stock_list }}
           WECHAT_WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
           STOCK_DATA_API_KEY: ${{ secrets.STOCK_DATA_API_KEY }}
-          # 新增 TAVILY_API_KEYS 参数
           TAVILY_API_KEYS: ${{ secrets.TAVILY_API_KEYS }}
         run: |
-          # 验证所有密钥读取成功（含 TAVILY_API_KEYS）
           echo "✅ 密钥读取验证："
           echo "GEMINI_API_KEY: ${GEMINI_API_KEY:0:10}..."
           echo "STOCK_LIST: ${STOCK_LIST}"
           echo "STOCK_DATA_API_KEY: ${STOCK_DATA_API_KEY:0:10}..."
-          echo "TAVILY_API_KEYS: ${TAVILY_API_KEYS:0:10}..."  # 新增验证行
-          # 运行主脚本（替换为你的实际主脚本名）
+          echo "TAVILY_API_KEYS: ${TAVILY_API_KEYS:0:10}..."
           python main.py
