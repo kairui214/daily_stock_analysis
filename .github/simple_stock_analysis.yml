@@ -12,13 +12,14 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip install requests google-generativeai tushare pandas numpy tavily-python
+        run: pip install requests google-generativeai tushare pandas numpy tavily-python openai
       - name: Run script
         env:
-          GEMINI_API_KEY: ${{ secrets.gemini_api_key }}
-          STOCK_LIST: ${{ secrets.stock_list }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          STOCK_LIST: ${{ secrets.STOCK_LIST }}
           WECHAT_WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
           STOCK_DATA_API_KEY: ${{ secrets.STOCK_DATA_API_KEY }}
           TAVILY_API_KEYS: ${{ secrets.TAVILY_API_KEYS }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         run: |
           python main.py
